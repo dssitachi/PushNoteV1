@@ -1,0 +1,12 @@
+Styling should be much better
+Search and notification icon
+Update status
+Protect Routes
+Add scroll view 
+Store some data offlines
+
+
+Employer swipe 3 options - delete, notify, chat
+EMployee swipe 1 option - chat
+
+Task Details Page
