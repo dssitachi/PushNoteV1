@@ -1,7 +1,7 @@
 import EmployerTask from "./EmployerTask";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BellIcon, HStack, Icon, SearchIcon, SettingsIcon } from "@gluestack-ui/themed";
-import { Clipboard, ListTodo, UserCircle2 } from "lucide-react-native";
+import { BarChart3, Clipboard, ListTodo, UserCircle2 } from "lucide-react-native";
 import EmployerNoticeBoard from "./EmployerNoticeBoard";
 import Profile from "../Profile";
 
@@ -9,7 +9,7 @@ const Tab = createBottomTabNavigator();
 export default function EmployerHome() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Task" component={EmployerTask}
+            <Tab.Screen name="Tasks" component={EmployerTask}
                 options={{
                     tabBarLabel: 'Tasks',
                     tabBarIcon: ({ focused, color }) => (
@@ -30,6 +30,20 @@ export default function EmployerHome() {
                         <Icon as={Clipboard} color={focused ? 'blue' : 'black'} />
                     ),
 
+                }}
+            />
+
+            <Tab.Screen name="Analytics" component={Profile}
+                options={{
+                    tabBarLabel: 'Analytics',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon as={BarChart3} color={focused ? 'blue' : 'black'} />
+                    ),
+                    headerRight: () => (
+                        <HStack px="$4">
+                            <Icon as={SettingsIcon} color="black" />
+                        </HStack>
+                    )
                 }}
             />
 

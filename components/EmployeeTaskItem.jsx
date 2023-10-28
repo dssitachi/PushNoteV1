@@ -1,33 +1,53 @@
 
-import { CheckIcon, Checkbox, CheckboxGroup, CheckboxIcon, CheckboxIndicator, CheckboxLabel, HStack, Text, VStack, View, set } from "@gluestack-ui/themed"
-import axios from "axios";
+import { CheckIcon, Checkbox, CheckboxIcon, CheckboxIndicator, CircleIcon, HStack, Icon, Text, VStack } from "@gluestack-ui/themed"
 import { useState } from "react";
+import { getTasksByAssignee, updateTask } from "../services/task/task.service";
+import { LayoutAnimation, UIManager } from "react-native";
 
-export default function EmployeeTaskItem({ task }) {
-	const [taskCompleted, setTaskCompleted] = useState(task.status == "completed");
+
+if (Platform.OS === 'android') {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+export default function EmployeeTaskItem({ task, setTasks }) {
+	
 	async function handleChange(checked) {
 		try {
-			const updatedTask = {...task, status: checked ? "completed" : "pending"};
-			const res = await axios.patch("http://192.168.1.3:3000/tasks/updateTask", 
-				updatedTask
-			)
-			setTaskCompleted(checked);
-			console.log(res.data);
+			const updatedTask = { ...task, status: checked ? "completed" : "pending" };
+			await updateTask(updatedTask)
+			const res = await getTasksByAssignee();
+			setTasks(res.data)
+			LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 		} catch (err) {
+			console.log('ehh')
 			console.log(err);
 		}
 	}
 
 	return (
-		<VStack p="$4" mx="$4" my="$1" bg="#f8f5fa" rounded="$md">
-			<HStack>
-				<Checkbox size="md" isChecked={taskCompleted} aria-label="Task Completed" onChange={handleChange}>
+		<VStack p="$4" mx="$4" my="$1" bg="#f8f5fa" rounded="$md" space="xs">
+			
+			<HStack alignItems="flex-start">
+				<Checkbox size="md" isChecked={task.status == 'completed' ? true : false} aria-label="Task Completed" onChange={handleChange}>
 					<CheckboxIndicator mr="$2">
 						<CheckboxIcon as={CheckIcon} />
 					</CheckboxIndicator>
 				</Checkbox>
-				<Text isTruncated={true} strikeThrough={taskCompleted}>{task.title}</Text>
+
+				<VStack space="xs">
+					<Text isTruncated={true} strikeThrough={task.status == 'completed' ? true : false}>{task.title}</Text>
+					<HStack alignItems="center" space="sm">
+						<Text size="xs" color="#526D82">Deadline: {task.dueDate} by {task.dueTime} </Text>
+						{(task.priority == "urgent") && (
+                        <>
+                            <Icon as={CircleIcon} color="#adb5bd" w="$1.5" h="$1.5" />
+                            <Text size="xs" color="$red600" >Urgent</Text>
+                        </>
+                    )}
+					</HStack>
+				</VStack>
 			</HStack>
+			
 		</VStack>
 	)
 }

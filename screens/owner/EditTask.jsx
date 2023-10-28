@@ -2,16 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Text, ButtonText, FormControl, Input, VStack, Button, Select, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, SelectItem, Pressable, InputIcon, InputSlot, CalendarDaysIcon, HStack, Box, ClockIcon, ChevronDownIcon, Icon, RadioGroup, RadioIndicator, RadioIcon, CircleIcon, RadioLabel, Radio, useToast } from "@gluestack-ui/themed";
+import { Text, ButtonText, FormControl, Input, VStack, Button, Select, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, SelectItem, Pressable, InputIcon, InputSlot, CalendarDaysIcon, HStack, Box, ClockIcon, ChevronDownIcon, Icon, RadioGroup, RadioIndicator, RadioIcon, CircleIcon, RadioLabel, Radio } from "@gluestack-ui/themed";
 import { InputField } from "@gluestack-ui/themed";
 import { useNavigation } from "@react-navigation/native";
-import { createTask, getEmployees } from "../../services/task/task.service";
-import { showToast } from "../../services/myToastservice";
+import { getEmployees, updateTask } from "../../services/task/task.service";
 
 
-function AddTask() {
+function EditTask({ route }) {
+    const taskData = route.params.task;
 	const navigation = useNavigation();
-	const toast = useToast();
+	
 	const [date, setDate] = useState(new Date());
 	const [time, setTime] = useState(new Date());
 	const [showTimePicker, setShowTimePicker] = useState(false);
@@ -19,15 +19,7 @@ function AddTask() {
 	
 	const [employees, setEmployees] = useState([]);
 
-	const [task, setTask] = useState({
-		title: "",
-		description: "",
-		priority: "normal",
-		dueDate: "",
-		dueTime: "",
-		assignedTo: "",
-		status: "pending"
-	});
+	const [task, setTask] = useState({...taskData, assignedTo: {assignee: taskData.assignee, assigneeId: taskData.assigneeId}});
 
 	function handleTask(type, value) {
 		setTask({
@@ -39,7 +31,7 @@ function AddTask() {
 	useEffect(() => {
 		async function fetchEmployees() {
 			try {
-				const res = await getEmployees();
+				const res = await getEmployees()
 				setEmployees(res.data)
 			} catch (err) {
 				console.log(err);
@@ -48,15 +40,14 @@ function AddTask() {
 		fetchEmployees();
 	}, []);
 
-	async function assignTask() {
-		const taskData = {
+	async function handleUpdateTask() {
+		const updatedTaskData = {
 			...task,
 			assignee: task.assignedTo.name,
 			assigneeId: task.assignedTo.userId,
 		};
 		try {
-			const res = await createTask(taskData)
-			showToast(toast)
+			const res = await updateTask(updatedTaskData)
 			navigation.navigate('Tasks', {'refresh': true});
 		} catch (err) {
 			console.log(err);
@@ -198,15 +189,15 @@ function AddTask() {
 					<VStack space="xs">
 						<Text size="md" fontWeight="$500">
 							Priority</Text>
-						<RadioGroup>
+						<RadioGroup value={task.priority} onChange={(e) => { handleTask('priority', e)}}>
 							<HStack space="xl">
-								<Radio value="normal" size="sm" onValueChange={(e) => { handleTask('priority', e)}}>
+								<Radio value="normal" size="sm">
 									<RadioIndicator mr="$1">
 										<RadioIcon as={CircleIcon} strokeWidth={1} />
 									</RadioIndicator>
 									<RadioLabel>Normal</RadioLabel>
 								</Radio>
-								<Radio value="urgent" size="sm" onValueChange={(e) => { handleTask('priority', e)}}>
+								<Radio value="urgent" size="sm">
 									<RadioIndicator mr="$1">
 										<RadioIcon as={CircleIcon} strokeWidth={1}  />
 									</RadioIndicator>
@@ -220,17 +211,12 @@ function AddTask() {
 						<HStack justifyContent="space-between" alignItems="center"
 							space="sm"
 						>
-							<Button bg="#12475929" variant="outline" action="secondary" flex={1}>
-								{/* {loading && <ButtonSpinner mr="$2" />} */}
-								<ButtonText fontWeight="$normal" color="$black">Schedule Task</ButtonText>
-							</Button>
-
 							<Button
-								onPress={() => { assignTask() }}
+								onPress={handleUpdateTask}
 								bg="#124759"
 								flex={1}
 							>
-								<ButtonText color="$white" fontWeight="$500">Assign Task</ButtonText>
+								<ButtonText color="$white" fontWeight="$500">Update Task</ButtonText>
 							</Button>
 						</HStack>
 					</VStack>
@@ -243,4 +229,4 @@ function AddTask() {
 	);
 }
 
-export default AddTask;
+export default EditTask;

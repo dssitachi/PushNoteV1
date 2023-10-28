@@ -91,7 +91,6 @@ export default function Login() {
                     </Button>
 
                     <Button onPress={handleRegister} bg="#12475929" variant="outline" action="secondary" isDisabled={loading}>
-                        {loading && <ButtonSpinner mr="$2" />}
                         <ButtonText fontWeight="$normal" color="$black">Create an account</ButtonText>
                     </Button>
 

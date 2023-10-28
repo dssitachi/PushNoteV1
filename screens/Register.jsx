@@ -24,6 +24,7 @@ export default function Register() {
 
 	const { onRegister } = useAuth();
 	async function handleRegister() {
+		console.log(expoPushToken)
 		await onRegister(name, email, password, expoPushToken);
 	};
 
@@ -90,7 +91,7 @@ export default function Register() {
 
 					
 
-					<Button onPress={handleRegister} bg="#124759" variant="outline" action="secondary" isDisabled={loading}>
+					<Button onPress={handleRegister} bg="#124759" variant="outline" action="secondary" isDisabled={loading} border="$none">
 						{loading && <ButtonSpinner mr="$2" />}
 						<ButtonText fontWeight="$normal" color="$white">Create an account</ButtonText>
 					</Button>

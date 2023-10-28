@@ -1,12 +1,17 @@
 Styling should be much better
 Search and notification icon
 Update status
-Protect Routes
 Add scroll view 
-Store some data offlines
 
 
-Employer swipe 3 options - delete, notify, chat
-EMployee swipe 1 option - chat
 
 Task Details Page
+
+
+Login and register validation - only one unique email, general form validation
+Chat
+Mark as completed 
+Mark as done
+
+
+when app reloads, it always logs in as employee

@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+
+import { Text, View } from "@gluestack-ui/themed"
 import React from 'react'
 
 export default function EmployeeNoticeBoard() {
   return (
-    <View>
-      <Text>EmployeeNoticeBoard</Text>
+    <View flex={1} justifyContent="center" alignItems="center">
+      <Text>Notice Board</Text>
     </View>
   )
 }

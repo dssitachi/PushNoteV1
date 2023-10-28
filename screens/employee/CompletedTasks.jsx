@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function TaskDetails() {
+export default function CompletedTasks() {
   return (
     <View>
-      <Text>TaskDetails</Text>
+      <Text>CompletedTasks</Text>
     </View>
   )
 }

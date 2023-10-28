@@ -10,7 +10,7 @@ export default function Profile() {
 		onLogout()
 	}
     return (
-        <VStack flex={1} bg="$white" p="$2" space="md">
+        <VStack flex={1} bg="$white" p="$4" space="md">
             <Text>Name</Text>
             <Text>John Doe</Text>
 

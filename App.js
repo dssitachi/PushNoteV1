@@ -10,7 +10,6 @@ import Login from "./screens/Login";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Register from "./screens/Register";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import TaskDetails from "./screens/TaskDetails";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

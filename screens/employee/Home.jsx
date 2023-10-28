@@ -1,12 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { View, Text } from 'react-native'
 import EmployeeTask from "./EmployeeTask";
-import TaskDetails from "../TaskDetails";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BellIcon, HStack, Icon, SearchIcon, SettingsIcon } from "@gluestack-ui/themed";
 import EmployeeNoticeBoard from "./EmployeeNoticeBoard";
 import Profile from "../Profile";
-import { Clipboard, ListTodo, UserCircle2 } from "lucide-react-native";
+import { Clipboard, History, ListTodo, UserCircle2 } from "lucide-react-native";
+import CompletedTasks from "./CompletedTasks";
 
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +32,16 @@ export default function EmployeeHome() {
                     tabBarLabel: 'News Board',
                     tabBarIcon: ({ focused, color }) => (
                         <Icon as={Clipboard} color={focused ? 'blue' : 'black'} />
+                    ),
+
+                }}
+            />
+
+            <Tab.Screen name="Completed Tasks" component={CompletedTasks}
+                options={{
+                    tabBarLabel: 'Archieve',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon as={History} color={focused ? 'blue' : 'black'} />
                     ),
 
                 }}
